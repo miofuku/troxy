@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/reptor/test/java"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/distrbt"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/chronos"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/jlib"/>
+	<classpathentry kind="lib" path="build/deps/jmh-core-1.12.jar" sourcepath="build/deps/jmh-core-1.12-sources.jar"/>
+	<classpathentry kind="lib" path="build/deps/jmh-generator-annprocess-1.12.jar"/>
+	<classpathentry kind="src" path=".apt_generated">
+		<attributes>
+			<attribute name="optional" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="build/deps/guava-19.0.jar" sourcepath="build/deps/guava-19.0-sources.jar"/>
+	<classpathentry kind="lib" path="build/deps/slf4j-api-1.7.21.jar"/>
+	<classpathentry kind="lib" path="build/deps/logback-classic-1.1.7.jar"/>
+	<classpathentry kind="lib" path="build/deps/logback-core-1.1.7.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/bench"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/replct"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/measr"/>
+	<classpathentry kind="output" path="build/classes/reptor/test"/>
+</classpath>

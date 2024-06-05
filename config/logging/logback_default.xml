@@ -1,0 +1,53 @@
+<configuration>
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <!-- Log level: OFF, (FATAL), ERROR, WARN, INFO, DEBUG, (TRACE), ALL -->
+
+  <!--
+  <logger name="reptor.replct.connect" level="DEBUG"/>
+  <logger name="reptor.distrbt.com" level="DEBUG"/>
+  <logger name="reptor.distrbt.io" level="DEBUG"/>
+  <logger name="reptor.tbft" level="DEBUG"/>
+  -->
+
+  <!--logger name="reptor.replct.invoke" level="DEBUG"/-->
+  <!--logger name="reptor.replct.execute" level="DEBUG"/-->
+
+  <!--
+  <logger name="reptor.replct.agree.order" level="DEBUG"/>
+  <logger name="reptor.replct.replicate.hybster.order" level="DEBUG"/>
+  <logger name="reptor.replct.replicate.pbft.order" level="DEBUG"/>
+  -->
+
+  <!--
+  <logger name="reptor.replct.agree.view" level="DEBUG"/>
+  <logger name="reptor.replct.replicate.hybster.view" level="DEBUG"/>
+  <logger name="reptor.replct.replicate.pbft.view" level="DEBUG"/>
+
+  <turboFilter class="ch.qos.logback.classic.turbo.MarkerFilter">
+    <Marker>view</Marker>
+    <OnMatch>ACCEPT</OnMatch>
+  </turboFilter>
+  -->
+
+  <!--
+  <logger name="reptor.replct.agree.checkpoint" level="DEBUG"/>
+  <logger name="reptor.replct.replicate.hybster.checkpoint" level="DEBUG"/>
+  <logger name="reptor.replct.replicate.pbft.checkpoint" level="DEBUG"/>
+
+  <turboFilter class="ch.qos.logback.classic.turbo.MarkerFilter">
+    <Marker>checkpoint</Marker>
+    <OnMatch>ACCEPT</OnMatch>
+  </turboFilter>
+  -->
+
+  <root level="INFO">
+    <appender-ref ref="STDOUT" />
+  </root>
+
+</configuration>

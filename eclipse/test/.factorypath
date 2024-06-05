@@ -1,0 +1,4 @@
+<factorypath>
+    <factorypathentry kind="WKSPJAR" id="/test/build/deps/jmh-core-1.12.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="WKSPJAR" id="/test/build/deps/jmh-generator-annprocess-1.12.jar" enabled="true" runInBatchMode="false"/>
+</factorypath>

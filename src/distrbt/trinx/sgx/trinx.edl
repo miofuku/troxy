@@ -1,0 +1,31 @@
+enclave
+{
+
+    include "counter/trinx_types.h"
+
+    enum boolean { FALSE = 0, TRUE = 1 };
+
+
+    untrusted
+    {
+        void ocall_print_string([in, string] const char *str);
+        void ocall_print_value([in, string] const char *str, uint64_t value);
+    };
+
+
+    trusted
+    {
+        public void ecall_init_counter(tssid_t tssid, ctrno_t ncounters, [user_check] const uint8_t *key, size_t keylen);
+        public void ecall_remove_counter(tssid_t tssid);
+
+        public size_t ecall_get_counter_certificate_size(tssid_t tssid);
+        public size_t ecall_get_mac_certificate_size(tssid_t tssid);
+
+        public size_t ecall_get_number_of_counters(tssid_t tssid);
+
+		public void ecall_execute_command(tssid_t tssid, [user_check] void *cmd);
+
+        public void ecall_touch(tssid_t tssid);
+    };
+
+};

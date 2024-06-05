@@ -1,0 +1,75 @@
+#!/bin/bash
+
+#-- eth0: public interface, second for benchmarks
+IRQAFF_ETH0_0="0010"         # cpu 0 core 3
+IRQAFF_ETH0_1="0040"         # cpu 0 core 4
+IRQAFF_ETH0_2="0020"         # cpu 0 core 3
+IRQAFF_ETH0_3="0080"         # cpu 0 core 4
+#-- eth1: first interface for benchmarks
+IRQAFF_ETH1_0="0001"         # cpu 0 core 0
+IRQAFF_ETH1_1="0004"         # cpu 0 core 1
+IRQAFF_ETH1_2="0002"         # cpu 0 core 0
+IRQAFF_ETH1_3="0008"         # cpu 0 core 0
+
+
+setup_queues()
+{
+	declare nic="$1"
+
+	# Network multi-queue setup
+	ethtool -L $nic rx 4
+	ethtool -L $nic tx 4
+	# Check
+	ethtool -l $nic
+}
+
+
+get_irqno()
+{
+	declare irqname="$1"
+
+	grep "$irqname" /proc/interrupts | cut -d : -f 1 | tr -d ' '
+}
+
+
+get_irqaff()
+{
+	declare irqname="$1"
+
+	declare vn="${irqname//-/_}"
+	vn="IRQAFF_${vn^^}"
+
+	echo "${!vn}"
+}
+
+
+setup_irq_affinity()
+{
+	declare nic="$1"
+
+	declare na
+	for na in "0" "1" "2" "3"
+	do
+		declare irqname="$nic-$na"
+		declare irqno=$(get_irqno "$irqname")
+		echo "$(get_irqaff $irqname)" > /proc/irq/${irqno}/smp_affinity
+		echo "IRQ $irqname ($irqno) `cat /proc/irq/${irqno}/smp_affinity_list`"
+	done
+}
+
+
+setup_nic()
+{
+	declare nic="$1"
+
+	echo "--> setup nic $nic"
+	setup_queues $nic
+	setup_irq_affinity $nic
+}
+
+
+declare nic
+for nic in "eth0" "eth1"
+do
+	setup_nic $nic
+done

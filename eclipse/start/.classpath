@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/reptor/start/java"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/chronos"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/distrbt"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/jlib"/>
+	<classpathentry kind="lib" path="build/deps/guava-19.0.jar" sourcepath="build/deps/guava-19.0-sources.jar"/>
+	<classpathentry kind="lib" path="build/deps/slf4j-api-1.7.21.jar" sourcepath="build/deps/slf4j-api-1.7.21-sources.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/bench"/>
+	<classpathentry kind="lib" path="build/deps/commons-math3-3.3.jar" sourcepath="build/deps/commons-math3-3.3-sources.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/replct"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/measr"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/tbft"/>
+	<classpathentry kind="output" path="build/classes/reptor/start"/>
+</classpath>

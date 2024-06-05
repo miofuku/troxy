@@ -1,0 +1,195 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+sourceSets
+{
+    jlib
+    {
+        java { srcDirs = [ 'src/base/jlib/java' ] }
+        output.classesDir = 'build/classes/base/jlib'
+    }
+
+    chronos
+    {
+        java { srcDirs = [ 'src/base/chronos/java' ] }
+        output.classesDir = 'build/classes/base/chronos'
+    }
+
+    measr
+    {
+        java { srcDirs = [ 'src/exprmt/measr/java' ] }
+        output.classesDir = 'build/classes/exprmt/measr'
+    }
+
+    distrbt
+    {
+        java { srcDirs = [ 'src/distrbt/distrbt/java' ] }
+        output.classesDir = 'build/classes/distrbt/distrbt'
+    }
+
+    replct
+    {
+        java { srcDirs = [ 'src/replct/replct/java' ] }
+        output.classesDir = 'build/classes/replct/replct'
+    }
+
+    tbft
+    {
+        java { srcDirs = [ 'src/tbft/tbft/java' ] }
+        output.classesDir = 'build/classes/tbft/tbft'
+    }
+
+    bench
+    {
+        java { srcDirs = [ 'src/replct/bench/java' ] }
+        output.classesDir = 'build/classes/replct/bench'
+    }
+
+    start
+    {
+        java { srcDirs = [ 'src/reptor/start/java' ] }
+        output.classesDir = 'build/classes/reptor/start'
+    }
+
+    test
+    {
+        java { srcDirs = [ 'src/reptor/test/java' ] }
+        output.classesDir = 'build/classes/reptor/test'
+    }
+
+}
+
+repositories
+{
+    mavenCentral()
+}
+
+
+dependencies
+{
+    jlibCompile 'com.google.guava:guava:19.0'
+	jlibCompile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'
+    jlibCompile 'net.java.dev.jna:jna:4.1.0'
+
+    chronosCompile sourceSets.jlib.output
+    chronosCompile 'com.google.guava:guava:19.0'
+
+    distrbtCompile sourceSets.jlib.output
+    distrbtCompile sourceSets.chronos.output
+    distrbtCompile 'com.google.guava:guava:19.0'
+	distrbtCompile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'
+	distrbtCompile group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.56'
+	distrbtCompile group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.56'
+
+    measrCompile sourceSets.jlib.output
+    measrCompile 'org.apache.commons:commons-math3:3.3'
+    measrCompile 'com.google.guava:guava:19.0'
+
+    replctCompile sourceSets.jlib.output
+    replctCompile sourceSets.chronos.output
+    replctCompile sourceSets.distrbt.output
+    replctCompile sourceSets.measr.output
+    replctCompile 'commons-codec:commons-codec:1.5'
+    replctCompile 'com.google.guava:guava:19.0'
+    replctCompile 'org.openjdk.jmh:jmh-core:1.12'
+    replctCompile 'org.openjdk.jmh:jmh-generator-annprocess:1.12'
+    replctCompile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'
+    replctCompile group: 'ch.qos.logback', name: 'logback-classic', version: '1.1.7'
+    replctCompile group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.56'
+    replctCompile group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.56'
+    replctCompile fileTree( dir: 'libs', include: '*.jar' )
+    replctCompile files( 'libs/bftsmarts/build/classes' )
+
+    tbftCompile sourceSets.jlib.output
+    tbftCompile sourceSets.chronos.output
+    tbftCompile sourceSets.distrbt.output
+    tbftCompile sourceSets.replct.output
+    tbftCompile 'com.google.guava:guava:19.0'
+    tbftCompile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'
+    tbftCompile fileTree( dir: 'libs', include: '*.jar' )
+
+    benchCompile sourceSets.jlib.output
+    benchCompile sourceSets.chronos.output
+    benchCompile sourceSets.distrbt.output
+    benchCompile sourceSets.measr.output
+    benchCompile sourceSets.replct.output
+    benchCompile sourceSets.tbft.output
+    benchCompile 'com.google.guava:guava:19.0'
+    benchCompile 'org.apache.commons:commons-math3:3.3'
+    benchCompile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'
+
+    startCompile sourceSets.jlib.output
+    startCompile sourceSets.chronos.output
+    startCompile sourceSets.distrbt.output
+    startCompile sourceSets.measr.output
+    startCompile sourceSets.replct.output
+    startCompile sourceSets.tbft.output
+    startCompile sourceSets.bench.output
+    startCompile 'com.google.guava:guava:19.0'
+    startCompile 'org.apache.commons:commons-math3:3.3'
+    startCompile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'
+
+    testCompile sourceSets.jlib.output
+    testCompile sourceSets.chronos.output
+    testCompile sourceSets.distrbt.output
+    testCompile sourceSets.measr.output
+    testCompile sourceSets.replct.output
+    testCompile sourceSets.tbft.output
+    testCompile sourceSets.bench.output
+    testCompile sourceSets.start.output
+    testCompile 'com.google.guava:guava:19.0'
+    testCompile 'org.openjdk.jmh:jmh-core:1.12'
+    testCompile 'org.openjdk.jmh:jmh-generator-annprocess:1.12'
+    testCompile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'
+    testCompile group: 'ch.qos.logback', name: 'logback-classic', version: '1.1.7'
+}
+
+
+task copyJars(type: Copy) {
+    def alldeps = [] as Set
+    for( conf in configurations ) { alldeps += conf.collect { it } }
+
+    from ( alldeps )
+    {
+        include '*.jar'
+    }
+
+    into 'build/deps'
+}
+
+
+task copySourceJars(type: Copy) {
+    def sources = [] as Set
+
+    for( conf in configurations ) {
+        sources += conf.resolvedConfiguration.resolvedArtifacts.collect
+                    {
+                        artifact ->
+                            project.dependencies.create( [
+                                group: artifact.moduleVersion.id.group,
+                                name: artifact.moduleVersion.id.name,
+                                version: artifact.moduleVersion.id.version,
+                                classifier: 'sources'
+                                ] )
+                    }
+    }
+
+    from configurations.detachedConfiguration( sources as Dependency[] )
+            .resolvedConfiguration.lenientConfiguration.getFiles( Specs.SATISFIES_ALL )
+    into 'build/deps'
+}
+
+
+task initDeps(dependsOn: [copyJars, copySourceJars])
+
+
+eclipse
+{
+    classpath
+    {
+       downloadSources = true
+    }
+}

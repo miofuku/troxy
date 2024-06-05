@@ -1,0 +1,155 @@
+#!/bin/bash
+
+#-- eth0: public interface, forth for benchmarks
+IRQAFF_ETH0_0="40040"        # cpu 0 core 3
+IRQAFF_ETH0_TXRX_1="40040"   # cpu 0 core 3
+IRQAFF_ETH0_TXRX_2="80080"   # cpu 1 core 3
+IRQAFF_ETH0_TXRX_3="800800"  # cpu 1 core 5
+#-- eth1: first interface for benchmarks
+IRQAFF_ETH1_0="1001"         # cpu 0 core 0
+IRQAFF_ETH1_TXRX_1="1001"    # cpu 0 core 0
+IRQAFF_ETH1_TXRX_2="2002"    # cpu 1 core 0
+IRQAFF_ETH1_TXRX_3="100100"  # cpu 0 core 4
+#-- eth2: second interface for benchmarks
+IRQAFF_ETH2_0="4004"         # cpu 0 core 1
+IRQAFF_ETH2_TXRX_1="4004"    # cpu 0 core 1
+IRQAFF_ETH2_TXRX_2="8008"    # cpu 1 core 1
+IRQAFF_ETH2_TXRX_3="400400"  # cpu 0 core 5
+#-- eth3: third interface for benchmarks
+IRQAFF_ETH3_0="10010"        # cpu 0 core 2
+IRQAFF_ETH3_TXRX_1="10010"   # cpu 0 core 2
+IRQAFF_ETH3_TXRX_2="20020"   # cpu 1 core 2
+IRQAFF_ETH3_TXRX_3="200200"  # cpu 1 core 4
+
+##-- eth0: public interface, second for benchmarks
+#IRQAFF_ETH0_0="2002"         # cpu 1 core 0
+#IRQAFF_ETH0_TXRX_1="2002"    # cpu 1 core 0
+#IRQAFF_ETH0_TXRX_2="8008"    # cpu 1 core 1
+#IRQAFF_ETH0_TXRX_3="20020"   # cpu 1 core 2
+#IRQAFF_ETH0_TXRX_4="80080"   # cpu 1 core 3
+##-- eth1: first interface for benchmarks
+#IRQAFF_ETH1_0="1001"         # cpu 0 core 0
+#IRQAFF_ETH1_TXRX_1="1001"    # cpu 0 core 0
+#IRQAFF_ETH1_TXRX_2="4004"    # cpu 0 core 1
+#IRQAFF_ETH1_TXRX_3="10010"   # cpu 0 core 2
+#IRQAFF_ETH1_TXRX_4="40040"   # cpu 0 core 3
+##-- eth2: third interface for benchmarks
+#IRQAFF_ETH2_0="100100"       # cpu 0 core 4
+#IRQAFF_ETH2_TXRX_1="100100"  # cpu 0 core 4
+#IRQAFF_ETH2_TXRX_2="400400"  # cpu 0 core 5
+#IRQAFF_ETH2_TXRX_3="200200"  # cpu 1 core 4
+#IRQAFF_ETH2_TXRX_4="800800"  # cpu 1 core 5
+#
+##-- eth0: public interface, second for benchmarks
+#IRQAFF_ETH0_TX_0="AA0AA"      # cpu 1 core 0
+#IRQAFF_ETH0_RX_1="2002"    # cpu 1 core 0
+#IRQAFF_ETH0_RX_2="8008"    # cpu 1 core 1
+#IRQAFF_ETH0_RX_3="20020"   # cpu 1 core 2
+#IRQAFF_ETH0_RX_4="80080"   # cpu 1 core 3
+##-- eth1: first interface for benchmarks
+#IRQAFF_ETH1_TX_0="55055"         # cpu 0 core 0
+#IRQAFF_ETH1_RX_1="1001"    # cpu 0 core 0
+#IRQAFF_ETH1_RX_2="4004"    # cpu 0 core 1
+#IRQAFF_ETH1_RX_3="10010"   # cpu 0 core 2
+#IRQAFF_ETH1_RX_4="40040"   # cpu 0 core 3
+##-- eth2: third interface for benchmarks
+#IRQAFF_ETH2_TX_0="F00F00"  # cpu 0 core 4
+#IRQAFF_ETH2_RX_1="100100"  # cpu 0 core 4
+#IRQAFF_ETH2_RX_2="400400"  # cpu 0 core 5
+#IRQAFF_ETH2_RX_3="200200"  # cpu 1 core 4
+#IRQAFF_ETH2_RX_4="800800"  # cpu 1 core 5
+
+setup_queues()
+{
+	declare nic="$1"
+
+	# Network multi-queue setup
+	if [ -z "$INFO_MODE" ]; then
+		ethtool -L $nic rx 3
+		ethtool -L $nic tx 3
+#		ethtool -L $nic tx 1
+	fi
+	# Check
+	ethtool -l $nic
+}
+
+
+get_irqno()
+{
+	declare irqname="$1"
+
+	grep "$irqname" /proc/interrupts | cut -d : -f 1 | tr -d ' '
+}
+
+
+get_irqaff()
+{
+	declare irqname="$1"
+
+	declare vn="${irqname//-/_}"
+	vn="IRQAFF_${vn^^}"
+
+	echo "${!vn}"
+}
+
+
+setup_irq_affinity()
+{
+	declare nic="$1"
+
+	declare na
+	for na in "0" "txrx-1" "txrx-2" "txrx-3"
+#	for na in "0" "txrx-1" "txrx-2" "txrx-3" "txrx-4"
+#	for na in "tx-0" "rx-1" "rx-2" "rx-3" "rx-4"
+#	for na in "0" "txrx-1" "txrx-2" "rx-3" "rx-4"
+	do
+		declare irqname="$nic-$na"
+		declare irqno=$(get_irqno "$irqname")
+		if [ -z "$INFO_MODE" ]; then
+			echo "$(get_irqaff $irqname)" > /proc/irq/${irqno}/smp_affinity
+		fi
+		echo "IRQ $irqname ($irqno) `cat /proc/irq/${irqno}/smp_affinity_list`"
+	done
+}
+
+
+setup_coalesce()
+{
+	declare nic="$1"
+
+	if [ -z "$INFO_MODE" ]; then
+#		ethtool -C $nic adaptive-rx on
+		ethtool -C $nic rx-usecs  20 #def: 20
+		ethtool -C $nic rx-frames 5 #def: 5
+#		ethtool -C $nic rx-useces-irq 0 #def: 0
+		ethtool -C $nic rx-frames-irq 5 #def: 5
+
+
+#		ethtool -C $nic adaptive-tx on
+		ethtool -C $nic tx-usecs  72 #def: 72
+		ethtool -C $nic tx-frames 53 #def: 53
+#		ethtool -C $nic tx-useces-irq 0 #def: 0
+		ethtool -C $nic tx-frames-irq 5 #def: 5
+	fi
+
+	ethtool -c $nic
+}
+
+
+setup_nic()
+{
+	declare nic="$1"
+
+	echo "--> setup nic $nic"
+	setup_queues $nic
+	setup_irq_affinity $nic
+#	setup_coalesce $nic
+}
+
+INFO_MODE="$1"
+
+declare nic
+for nic in "eth0" "eth1" "eth2" "eth3"
+do
+	setup_nic $nic
+done

@@ -1,0 +1,54 @@
+#!/bin/bash
+
+IRQAFF_ETH1="0002"        # core 1
+IRQAFF_ETH2="0004"        # core 2
+IRQAFF_ETH3="0008"        # core 3
+IRQAFF_ETH4="0001"        # core 0
+
+get_irqno()
+{
+	declare irqname="$1"
+
+	grep "$irqname" /proc/interrupts | cut -d : -f 1 | tr -d ' '
+}
+
+
+get_irqaff()
+{
+	declare irqname="$1"
+
+	declare vn="${irqname//-/_}"
+	vn="IRQAFF_${vn^^}"
+
+	echo "${!vn}"
+}
+
+
+setup_irq_affinity()
+{
+	declare nic="$1"
+
+	declare irqname="$nic"
+	declare irqno=$(get_irqno "$irqname")
+	if [ -z "$INFO_MODE" ]; then
+		echo "$(get_irqaff $irqname)" > /proc/irq/${irqno}/smp_affinity
+	fi
+	echo "IRQ $irqname ($irqno) `cat /proc/irq/${irqno}/smp_affinity_list`"
+}
+
+
+setup_nic()
+{
+	declare nic="$1"
+
+	echo "--> setup nic $nic"
+	setup_irq_affinity $nic
+}
+
+INFO_MODE="$1"
+
+declare nic
+for nic in "eth1" "eth2" "eth3" "eth4"
+do
+	setup_nic $nic
+done

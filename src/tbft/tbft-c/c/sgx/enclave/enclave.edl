@@ -1,0 +1,38 @@
+enclave
+{
+    include "../../common/HandshakeResult.h"
+    include "../../common/CTroxy.h"
+    //from "../talos/src/libressl-2.4.1/crypto/enclave.edl" import *;
+    from "sgx_tstdc.edl" import *;
+
+    untrusted
+    {
+        void ocall_print_string([in, string] const char* str);
+    };
+    trusted
+    {
+        public void ecall_init(troxy_conf_t conf);
+        public void ecall_reset_handshake([user_check] handshake_result_t *result, uint16_t hsno, uint8_t clear);
+        public void ecall_accept([user_check] handshake_result_t *result, uint16_t hsno);
+        public void ecall_get_handshake_inbound_minimum_buffer_size([user_check] int *result, uint16_t hsno);
+        public void ecall_get_handshake_outbound_minimum_buffer_size([user_check] int *result, uint16_t hsno);
+        public void ecall_process_handshake_inbound_data([user_check] handshake_result_t *result, uint16_t hsno, [user_check] buffer_t *source);
+        public void ecall_retrieve_handshake_outbound_data([user_check] handshake_result_t *result, uint16_t hsno, [user_check] buffer_t *destination);
+        public void ecall_save_state(short hsno);
+
+        public void ecall_open([user_check] client_result_t *result, uint16_t clino);
+        public void ecall_init_client(uint16_t clino, [user_check] buffer_t *sendbuffer);
+        public void ecall_get_client_inbound_minimum_buffer_size([user_check] int *result, uint16_t clino);
+        public void ecall_get_client_outbound_minimum_buffer_size([user_check] int *result, uint16_t clino);
+        public bool ecall_process_client_inbound_data([user_check] client_result_t *result, uint16_t clino, [user_check] buffer_t *src, [user_check] buffer_t *dest);
+        public void ecall_retrieve_client_outbound_data([user_check] client_result_t *result, uint16_t clino, [user_check] buffer_t *dst);
+
+        public void ecall_retrieve_outbound_messages([user_check] client_result_t *result, uint16_t clino);
+
+        public void ecall_handle_forwarded_request([user_check] client_result_t *cliresult, [user_check] bool *result, uint16_t clino, [user_check] buffer_t *request);
+        public void ecall_handle_request_executed([user_check] client_result_t *result, uint16_t clino, uint64_t invno, [user_check] buffer_t *reply, bool replyfull);
+        public void ecall_handle_reply([user_check] client_result_t *result, uint16_t clino, [user_check] buffer_t *reply);
+        public void ecall_verify_proposal([user_check] bool *result, uint32_t verifier, [user_check] buffer_t *to_verify);
+        public void ecall_verify_proposals([user_check] bool *result, uint32_t verifier, [user_check] buffer_t *to_verify);
+    };
+};

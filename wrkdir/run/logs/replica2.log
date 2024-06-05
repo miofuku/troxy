@@ -1,0 +1,9 @@
+<<READY>>
+WARN  - CONN[00005] java.io.EOFException
+WARN  - CONN[00004] java.io.EOFException
+WARN  - CONN[00010] java.io.EOFException
+WARN  - CONN[00003] java.io.EOFException
+WARN  - CONN[00008] java.io.EOFException
+WARN  - CONN[00006] java.io.EOFException
+WARN  - CONN[00007] java.io.EOFException
+WARN  - CONN[00009] java.io.EOFException

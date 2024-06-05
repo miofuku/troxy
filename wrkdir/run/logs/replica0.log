@@ -1,0 +1,26 @@
+<<READY>>
+WARN  - CONN[00009] java.io.EOFException
+WARN  - CONN[00004] java.io.EOFException
+WARN  - CONN[00005] java.io.EOFException
+WARN  - CONN[00007] java.io.EOFException
+WARN  - CONN[00008] java.io.EOFException
+WARN  - CONN[00003] java.io.EOFException
+WARN  - CONN[00006] java.io.EOFException
+WARN  - CONN[00010] java.io.EOFException
+Start at Fri Dec 01 23:11:25 CET 2017
+WARN  - CONN[00702] java.io.EOFException
+WARN  - CONN[00102] java.io.EOFException
+WARN  - CONN[00502] java.io.EOFException
+WARN  - CONN[00302] java.io.EOFException
+WARN  - CONN[00402] java.io.EOFException
+WARN  - CONN[00602] java.io.EOFException
+WARN  - CONN[00202] java.io.EOFException
+WARN  - CONN[00002] java.io.EOFException
+WARN  - CONN[00001] java.io.EOFException
+WARN  - CONN[00501] java.io.EOFException
+WARN  - CONN[00601] java.io.EOFException
+WARN  - CONN[00401] java.io.EOFException
+WARN  - CONN[00101] java.io.EOFException
+WARN  - CONN[00201] java.io.EOFException
+WARN  - CONN[00301] java.io.EOFException
+WARN  - CONN[00701] java.io.EOFException

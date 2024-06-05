@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/exprmt/measr/java"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/jlib"/>
+	<classpathentry kind="lib" path="build/deps/commons-math3-3.3.jar"/>
+	<classpathentry kind="lib" path="build/deps/guava-19.0.jar"/>
+	<classpathentry kind="output" path="build/classes/exprmt/measr"/>
+</classpath>
